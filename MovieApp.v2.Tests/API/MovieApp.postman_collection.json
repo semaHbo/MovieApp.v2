@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "1234-5678-9012-3456",
+		"name": "MovieApp API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Movies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is an array\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/movies",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "movies"]
+				}
+			}
+		},
+		{
+			"name": "Get Movie by Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Movie has required fields\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"    pm.expect(jsonData).to.have.property('title');",
+							"    pm.expect(jsonData).to.have.property('director');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/movies/1",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "movies", "1"]
+				}
+			}
+		},
+		{
+			"name": "Create Movie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Movie is created with correct data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.title).to.eql(\"Test Movie\");",
+							"    pm.expect(jsonData.director).to.eql(\"Test Director\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Test Movie\",\n    \"director\": \"Test Director\",\n    \"description\": \"Test Description\",\n    \"genreId\": 1,\n    \"rating\": 4.5,\n    \"releaseDate\": \"2024-03-14\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/movies",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "movies"]
+				}
+			}
+		},
+		{
+			"name": "Update Movie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Movie is updated with correct data\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.title).to.eql(\"Updated Movie\");",
+							"    pm.expect(jsonData.director).to.eql(\"Updated Director\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"title\": \"Updated Movie\",\n    \"director\": \"Updated Director\",\n    \"description\": \"Updated Description\",\n    \"genreId\": 1,\n    \"rating\": 4.8,\n    \"releaseDate\": \"2024-03-14\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/movies/1",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "movies", "1"]
+				}
+			}
+		},
+		{
+			"name": "Delete Movie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/movies/1",
+					"host": ["{{baseUrl}}"],
+					"path": ["api", "movies", "1"]
+				}
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:7001"
+		}
+	]
+} 

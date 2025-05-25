@@ -1,0 +1,85 @@
+@model IEnumerable<MovieApp.v2.Web.Models.Movie>
+
+@{
+    ViewData["Title"] = "Filmler";
+}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h1>@ViewData["Title"]</h1>
+        </div>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <div class="col-auto">
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Yeni Film
+                </a>
+            </div>
+        }
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <form asp-action="Index" method="get" class="d-flex">
+                <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control me-2" placeholder="Film ara...">
+                <button type="submit" class="btn btn-outline-primary">Ara</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(item.PosterUrl))
+                    {
+                        <img src="@item.PosterUrl" class="card-img-top" alt="@item.Title">
+                    }
+                    else
+                    {
+                        <img src="/images/no-poster.jpg" class="card-img-top" alt="No Poster">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@item.Director</h6>
+                        <p class="card-text">@(item.Description?.Length > 100 ? item.Description.Substring(0, 97) + "..." : item.Description)</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-primary">@item.Genre?.Name</span>
+                            <span class="badge bg-info">@item.Rating / 10</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="btn-group w-100">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">
+                                <i class="fas fa-info-circle"></i> Detay
+                            </a>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary">
+                                    <i class="fas fa-edit"></i> Düzenle
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">
+                                    <i class="fas fa-trash"></i> Sil
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+} 

@@ -1,0 +1,59 @@
+@model MovieApp.v2.Web.Models.Movie
+
+@{
+    ViewData["Title"] = $"Film Sil - {Model.Title}";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">@ViewData["Title"]</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Bu filmi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Title)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Title)</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Director)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Director)</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Rating)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Rating)</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ReleaseDate)</dt>
+                        <dd class="col-sm-9">@Model.ReleaseDate.ToString("d MMMM yyyy")</dd>
+
+                        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Genre)</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Genre.Name)</dd>
+                    </dl>
+
+                    <form asp-action="Delete" class="mt-4">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Index" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-arrow-left"></i> Listeye Dön
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Sil
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+} 

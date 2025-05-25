@@ -1,0 +1,74 @@
+@model MovieApp.v2.Web.Models.Movie
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        @if (!string.IsNullOrEmpty(Model.PosterUrl))
+                        {
+                            <img src="@Model.PosterUrl" class="img-fluid rounded-start" alt="@Model.Title">
+                        }
+                        else
+                        {
+                            <img src="/images/no-poster.jpg" class="img-fluid rounded-start" alt="No Poster">
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="card-title">@Model.Title</h3>
+                                <span class="badge bg-primary fs-5">@Model.Rating / 10</span>
+                            </div>
+                            <h5 class="card-subtitle mb-2 text-muted">@Model.Director</h5>
+                            
+                            <div class="mb-3">
+                                <span class="badge bg-info">@Model.Genre?.Name</span>
+                                <small class="text-muted ms-2">@Model.ReleaseDate.ToString("d MMMM yyyy")</small>
+                            </div>
+
+                            <p class="card-text">@Model.Description</p>
+
+                            <div class="mt-4">
+                                <dl class="row">
+                                    <dt class="col-sm-3">Oluşturulma Tarihi</dt>
+                                    <dd class="col-sm-9">@Model.CreatedAt.ToString("g")</dd>
+
+                                    @if (Model.UpdatedAt.HasValue)
+                                    {
+                                        <dt class="col-sm-3">Son Güncelleme</dt>
+                                        <dd class="col-sm-9">@Model.UpdatedAt.Value.ToString("g")</dd>
+                                    }
+                                </dl>
+                            </div>
+
+                            <div class="mt-4">
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> Listeye Dön
+                                </a>
+                                @if (User.Identity?.IsAuthenticated == true)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary ms-2">
+                                        <i class="fas fa-edit"></i> Düzenle
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger ms-2">
+                                        <i class="fas fa-trash"></i> Sil
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+} 
